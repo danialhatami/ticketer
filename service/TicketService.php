@@ -5,11 +5,25 @@ use App\Models\Ticket;
 class TicketService
 {
 
+    private UserService $userService;
 
-    public function create(): Ticket
+    /**
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
     {
-        $ticketService = Ticket::create();
+        $this->userService = $userService;
+    }
 
-        return $ticketService;
+
+    public function create(array $parameters, \App\Models\User $questionerUser): Ticket
+    {
+        return Ticket::create([
+            'title' => $parameters['title'],
+            'description' => $parameters['description'],
+            'assignee_user_id' =>
+            'assignee_user_id'
+        ]);
+
     }
 }

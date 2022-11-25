@@ -3,39 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use TicketService;
 
 class TicketController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+private TicketService $tickerService;
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param TicketService $tickerService
      */
-    public function create()
+    public function __construct(TicketService $tickerService)
     {
-        //
+        $this->tickerService = $tickerService;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:100',
+            'description' => 'required|string|max:255',
+        ]);
+        $ticket = $this->tickerService->create($request->toArray(),$request->user());
     }
 
     /**
